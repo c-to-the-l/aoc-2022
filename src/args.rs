@@ -40,5 +40,6 @@ impl std::str::FromStr for ProblemSelect {
 #[derive(Parser, Debug, Clone)]
 #[clap(author, version, about)]
 pub struct Args {
+    /// One or more problem numbers or hyphenated ranges of the form "x-y"
     pub problems: Vec<ProblemSelect>,
 }
