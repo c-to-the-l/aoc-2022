@@ -1,4 +1,3 @@
-
 pub struct Day {
     p1: i64,
     p2: i64,
@@ -9,16 +8,12 @@ impl crate::Problem for Day {
     const DAY: u32 = 18;
 
     fn new<S: AsRef<str>>(_input: S) -> Self {
-        Self{p1: 0, p2: 0}
+        Self { p1: 0, p2: 0 }
     }
 
-    fn do_p1(&mut self) {
-        
-    }
+    fn do_p1(&mut self) {}
 
-    fn do_p2(&mut self) {
-        
-    }
+    fn do_p2(&mut self) {}
 
     fn p1_result(&self) -> String {
         format!("{}", self.p1)

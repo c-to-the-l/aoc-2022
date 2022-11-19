@@ -24,10 +24,10 @@ mod d023;
 mod d024;
 mod d025;
 
-use std::time::Duration;
 use crate::{run_problem, AocCache, Result};
 use anyhow::bail;
-            
+use std::time::Duration;
+
 fn do_day(c: &AocCache, day: u32) -> Result<Duration> {
     match day {
         1 => run_problem::<d001::Day>(c),
@@ -58,11 +58,9 @@ fn do_day(c: &AocCache, day: u32) -> Result<Duration> {
         _ => bail!("Invalid day."),
     }
 }
-        
+
 pub fn do_problems(c: &AocCache, problems: Vec<u32>) -> Result<Duration> {
     problems
         .iter()
-        .try_fold(Duration::ZERO, |dur, day| {
-            Ok(dur + do_day(c, *day)?)
-        })
+        .try_fold(Duration::ZERO, |dur, day| Ok(dur + do_day(c, *day)?))
 }

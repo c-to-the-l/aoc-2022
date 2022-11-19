@@ -1,4 +1,5 @@
 use anyhow::Result;
+use chrono::{DateTime, TimeZone, Utc};
 use reqwest::{blocking::Client, cookie::Jar, Url};
 use std::io::prelude::*;
 use std::{
@@ -30,10 +31,12 @@ impl AocCache {
         })
     }
 
+    /// Render the full cache path for a given year and day
     fn path_for(&self, year: u32, day: u32) -> PathBuf {
         self.cache.join(format!("y{}d{}.txt", year, day))
     }
 
+    /// Load the input for problem `year`-`day` from the cache or the web
     pub fn get_input(&self, year: u32, day: u32) -> Result<String> {
         if let Ok(mut file) = File::open(self.path_for(year, day)) {
             log::debug!("Using cached input for {}-{}", year, day);
@@ -79,7 +82,18 @@ pub fn run_problem<P: Problem>(c: &AocCache) -> Result<Duration> {
         p.p2_result(),
         p2_t
     );
-    Ok(p1_t+p2_t)
+    Ok(p1_t + p2_t)
+}
+
+pub fn delta_start(year: u32, now: DateTime<Utc>) -> chrono::Duration {
+    let start = chrono_tz::EST
+        .with_ymd_and_hms(year as i32, 12, 1, 00, 00, 00)
+        .unwrap();
+    now.signed_duration_since(start)
+}
+
+pub fn num_available_problems(year: u32, now: DateTime<Utc>) -> u32 {
+    (1 + delta_start(year, now).num_days().clamp(-1, 24)) as u32
 }
 
 pub trait Problem {
@@ -90,4 +104,41 @@ pub trait Problem {
     fn do_p2(&mut self);
     fn p1_result(&self) -> String;
     fn p2_result(&self) -> String;
+}
+
+#[cfg(test)]
+mod tests {
+    use chrono::{Duration, TimeZone};
+
+    use crate::{delta_start, num_available_problems};
+
+    #[test]
+    fn test_start_check() {
+        let fake_now_before = chrono::Utc
+            .with_ymd_and_hms(crate::YEAR as i32, 11, 30, 00, 00, 00)
+            .unwrap();
+        let fake_now_after = chrono::Utc
+            .with_ymd_and_hms(crate::YEAR as i32, 12, 2, 00, 00, 00)
+            .unwrap();
+        let fake_keen_player = chrono::Utc
+            .with_ymd_and_hms(crate::YEAR as i32, 12, 1, 5, 00, 01)
+            .unwrap();
+
+        assert_eq!(
+            delta_start(crate::YEAR, fake_now_before),
+            Duration::hours(-29)
+        );
+        assert_eq!(
+            delta_start(crate::YEAR, fake_now_after),
+            Duration::hours(19)
+        );
+        assert_eq!(
+            delta_start(crate::YEAR, fake_keen_player),
+            Duration::seconds(1)
+        );
+
+        assert_eq!(num_available_problems(crate::YEAR, fake_now_before), 0);
+        assert_eq!(num_available_problems(crate::YEAR, fake_now_after), 1);
+        assert_eq!(num_available_problems(crate::YEAR, fake_keen_player), 1);
+    }
 }

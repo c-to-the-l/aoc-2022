@@ -1,11 +1,17 @@
 use anyhow::{bail, Result};
 use clap::Parser;
-use nom::{self, sequence::tuple, character::complete, combinator::{opt, eof}, error::VerboseError};
+use nom::{
+    self,
+    character::complete,
+    combinator::{eof, opt},
+    error::VerboseError,
+    sequence::tuple,
+};
 
 #[derive(Debug, Clone)]
 pub enum ProblemSelect {
     Day(u32),
-    DayRange(u32, u32)
+    DayRange(u32, u32),
 }
 
 impl std::str::FromStr for ProblemSelect {
@@ -15,10 +21,11 @@ impl std::str::FromStr for ProblemSelect {
         let (_, (l, r, _)) = match tuple((
             complete::u32::<_, VerboseError<_>>,
             opt(tuple((complete::char('-'), complete::u32))),
-            eof
-        ))(s) {
+            eof,
+        ))(s)
+        {
             Ok(s) => s,
-            Err(e) => bail!("{}", e)
+            Err(e) => bail!("{}", e),
         };
         if let Some((_, r)) = r {
             if !(1..=25).contains(&r) || !(1..=25).contains(&l) {

@@ -13,3 +13,5 @@ clap = { version = "4.0.26", features = ["derive"] }
 log = "0.4"
 nom = "7.1.1"
 env_logger = "0.9.3"
+chrono = "0.4.23"
+chrono-tz = "0.8.0"
