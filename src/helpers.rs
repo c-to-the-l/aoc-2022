@@ -23,7 +23,10 @@ impl AocCache {
         let domain = "https://adventofcode.com".parse::<Url>()?;
         let jar = Jar::default();
         jar.add_cookie_str(&cookie, &domain);
-        let client = Client::builder().cookie_provider(Arc::new(jar)).build()?;
+        let client = Client::builder()
+            .cookie_provider(Arc::new(jar))
+            .user_agent("https://github.com/c-to-the-l/aoc-2022.git by 39165068+c-to-the-l@users.noreply.github.com")
+            .build()?;
         log::debug!("AocCache Constructed");
         Ok(Self {
             client,
@@ -60,7 +63,7 @@ pub fn run_problem<P: Problem>(c: &AocCache) -> Result<Duration> {
     let input = c.get_input(P::YEAR, P::DAY)?;
 
     let s = Instant::now();
-    let mut p = P::new(&input);
+    let mut p = P::new(input);
     let p_s = s.elapsed();
 
     let s = Instant::now();
@@ -99,7 +102,7 @@ pub fn num_available_problems(year: u32, now: DateTime<Utc>) -> u32 {
 pub trait Problem {
     const YEAR: u32;
     const DAY: u32;
-    fn new<S: AsRef<str>>(input: S) -> Self;
+    fn new(input: String) -> Self;
     fn do_p1(&mut self);
     fn do_p2(&mut self);
     fn p1_result(&self) -> String;

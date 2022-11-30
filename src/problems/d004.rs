@@ -7,7 +7,7 @@ impl crate::Problem for Day {
     const YEAR: u32 = crate::YEAR;
     const DAY: u32 = 4;
 
-    fn new<S: AsRef<str>>(_input: S) -> Self {
+    fn new(_input: String) -> Self {
         Self { p1: 0, p2: 0 }
     }
 
