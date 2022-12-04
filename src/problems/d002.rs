@@ -2,34 +2,18 @@
 // B Y 2 Paper
 // C Z 3 Scissors
 
-
 fn score(s: &str) -> i64 {
-    match s.split_once(' ') {
-        Some(("A", d)) => {
-            match d {
-                "X" => 1 + 3,
-                "Y" => 2 + 6,
-                "Z" => 3,
-                x => panic!("Sub Unexpected: {}", x),
-            }
-        }
-        Some(("B", d)) => {
-            match d {
-                "X" => 1,
-                "Y" => 2 + 3,
-                "Z" => 3 + 6,
-                x => panic!("Sub Unexpected: {}", x),
-            }
-        }
-        Some(("C", d)) => {
-            match d {
-                "X" => 1 + 6,
-                "Y" => 2,
-                "Z" => 3 + 3,
-                x => panic!("Sub Unexpected: {}", x),
-            }
-        }
-        x => panic!("Unexpected: {:?}", x),
+    match s {
+        "A X" => 4,
+        "A Y" => 8,
+        "A Z" => 3,
+        "B X" => 1,
+        "B Y" => 5,
+        "B Z" => 9,
+        "C X" => 7,
+        "C Y" => 2,
+        "C Z" => 6,
+        x => panic!("Unexpected: {}", x),
     }
 }
 
@@ -41,33 +25,18 @@ fn score(s: &str) -> i64 {
 // Y draw
 // Z win
 
-fn score_p2 (s: &str) -> i64 {
-    match s.split_once(' ') {
-        Some(("A", d)) => {
-            match d {
-                "X" => 3 + 0,
-                "Y" => 1 + 3,
-                "Z" => 2 + 6,
-                x => panic!("Sub Unexpected: {}", x),
-            }
-        }
-        Some(("B", d)) => {
-            match d {
-                "X" => 1,
-                "Y" => 2 + 3,
-                "Z" => 3 + 6,
-                x => panic!("Sub Unexpected: {}", x),
-            }
-        }
-        Some(("C", d)) => {
-            match d {
-                "X" => 0 + 2,
-                "Y" => 3 + 3,
-                "Z" => 6 + 1,
-                x => panic!("Sub Unexpected: {}", x),
-            }
-        }
-        x => panic!("Unexpected: {:?}", x),
+fn score_p2(s: &str) -> i64 {
+    match s {
+        "A X" => 3,
+        "A Y" => 4,
+        "A Z" => 8,
+        "B X" => 1,
+        "B Y" => 5,
+        "B Z" => 9,
+        "C X" => 2,
+        "C Y" => 6,
+        "C Z" => 7,
+        x => panic!("Unexpected: {}", x),
     }
 }
 

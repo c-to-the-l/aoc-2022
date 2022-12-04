@@ -32,7 +32,6 @@ impl crate::Problem for Day {
                 (
                     (a.parse().unwrap()..=b.parse().unwrap()),
                     (c.parse().unwrap()..=d.parse().unwrap()),
-                    
                 )
             })
             .collect();
