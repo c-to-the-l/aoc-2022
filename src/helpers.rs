@@ -75,7 +75,7 @@ pub fn run_problem<P: Problem>(c: &AocCache) -> Result<Duration> {
     let p2_t: Duration = s.elapsed();
 
     println!(
-        "Problem {}-{:02} in {:>8.1?} (Setup {:>8.1?}) - P1: {:<8} ({:>8.1?}) - P2: {:<8} ({:>8.1?}).",
+        "Problem {}-{:02} in {:>8.1?} (Setup {:>8.1?}) - P1: {:<10} ({:>8.1?}) - P2: {:<10} ({:>8.1?}).",
         P::YEAR,
         P::DAY,
         p_s + p1_t + p2_t,
