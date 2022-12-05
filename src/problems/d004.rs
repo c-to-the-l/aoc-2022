@@ -1,10 +1,10 @@
-use std::ops::RangeInclusive;
+use nom::{character::complete, combinator, multi::separated_list1, sequence::tuple};
 
 pub struct Day {
     p1: i64,
     p2: i64,
     input: String,
-    ranges: Vec<(RangeInclusive<i64>, RangeInclusive<i64>)>,
+    ranges: Vec<(i32, i32, i32, i32)>,
 }
 
 impl crate::Problem for Day {
@@ -21,26 +21,28 @@ impl crate::Problem for Day {
     }
 
     fn do_p1(&mut self) {
-        self.ranges = self
-            .input
-            .trim()
-            .lines()
-            .map(|s| {
-                let (l, r) = s.split_once(',').unwrap();
-                let (a, b) = l.split_once('-').unwrap();
-                let (c, d) = r.split_once('-').unwrap();
-                (
-                    (a.parse().unwrap()..=b.parse().unwrap()),
-                    (c.parse().unwrap()..=d.parse().unwrap()),
-                )
-            })
-            .collect();
+        let mut parse_all = separated_list1::<&str, _, _, nom::error::Error<_>, _, _>(
+            complete::char('\n'),
+            combinator::map(
+                tuple((
+                    complete::i32,
+                    complete::char('-'),
+                    complete::i32,
+                    complete::char(','),
+                    complete::i32,
+                    complete::char('-'),
+                    complete::i32,
+                )),
+                |(a, _, b, _, c, _, d)| (a, b, c, d),
+            ),
+        );
+
+        self.ranges = parse_all(self.input.as_str()).unwrap().1;
         self.p1 = self
             .ranges
             .iter()
-            .filter(|(l, r)| {
-                l.contains(r.start()) && l.contains(r.end())
-                    || r.contains(l.start()) && r.contains(l.end())
+            .filter(|(a, b, c, d)| {
+                c >= a && c <= b && d >= a && d <= b || a >= c && a <= d && b >= c && b <= d
             })
             .count() as i64;
     }
@@ -49,11 +51,8 @@ impl crate::Problem for Day {
         self.p2 = self
             .ranges
             .iter()
-            .filter(|(l, r)| {
-                l.contains(r.start())
-                    || l.contains(r.end())
-                    || r.contains(l.start())
-                    || r.contains(l.end())
+            .filter(|(a, b, c, d)| {
+                c >= a && c <= b || d >= a && d <= b || a >= c && a <= d || b >= c && b <= d
             })
             .count() as i64;
     }

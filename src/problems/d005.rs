@@ -20,8 +20,6 @@ pub struct Day {
     instructions: Vec<(usize, usize, usize)>,
 }
 
-
-
 impl crate::Problem for Day {
     const YEAR: u32 = crate::YEAR;
     const DAY: u32 = 5;
