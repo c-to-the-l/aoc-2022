@@ -18,6 +18,7 @@ fn main() -> Result<()> {
     env_logger::init();
     let args = Args::parse();
     let probs: Vec<u32> = if args.problems.is_empty() {
+        log::debug!("{}", num_available_problems(YEAR, Utc::now()));
         let p: Vec<u32> = (1..=num_available_problems(YEAR, Utc::now())).collect();
         if p.is_empty() {
             log::error!(

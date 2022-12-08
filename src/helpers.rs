@@ -89,9 +89,12 @@ pub fn run_problem<P: Problem>(c: &AocCache) -> Result<Duration> {
 }
 
 pub fn delta_start(year: u32, now: DateTime<Utc>) -> chrono::Duration {
+    log::debug!("{}", now);
     let start = chrono_tz::EST
         .with_ymd_and_hms(year as i32, 12, 1, 00, 00, 00)
         .unwrap();
+    log::debug!("{}", start);
+    log::debug!("{}", now.signed_duration_since(start));
     now.signed_duration_since(start)
 }
 
