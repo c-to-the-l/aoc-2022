@@ -11,8 +11,7 @@ fn scenic_score(x: usize, y: usize, trees: &Vec<Vec<i8>>) -> usize {
     (trees[x][y+1..].iter().take_while(|v| **v < trees[x][y]).count().max(1) + 1).min(trees[0].len() - y - 1) * // right
     (trees[x][..y].iter().rev().take_while(|v| **v < trees[x][y]).count().max(1) + 1 ).min(y) * // left
     ((x+1..trees.len()).take_while(|xsub| trees[*xsub][y] < trees[x][y]).count().max(1)+1 ).min(trees.len() - x - 1) * // down
-    ((0..x).rev().take_while(|xsub| trees[*xsub][y] < trees[x][y]).count().max(1)+1 ).min(x)
-    // up
+    ((0..x).rev().take_while(|xsub| trees[*xsub][y] < trees[x][y]).count().max(1)+1 ).min(x) // up
 }
 
 impl crate::Problem for Day {

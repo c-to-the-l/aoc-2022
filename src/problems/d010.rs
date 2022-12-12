@@ -79,6 +79,7 @@ impl crate::Problem for Day {
     }
 
     fn p2_result(&self) -> String {
-        format!("{}", self.p2)
+        format!("")
+        // format!("{}", self.p2)
     }
 }
