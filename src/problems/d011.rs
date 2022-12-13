@@ -1,4 +1,4 @@
-use std::collections:: VecDeque;
+use std::collections::VecDeque;
 
 use nom::multi::separated_list1;
 
@@ -22,11 +22,10 @@ impl Operation {
         match op {
             '+' => Self::Add(val.parse().unwrap()),
             '*' => match val {
-                    "old" => Self::Square,
-                    x => Self::Multiply(x.parse().unwrap())
-                }
+                "old" => Self::Square,
+                x => Self::Multiply(x.parse().unwrap()),
+            },
             x => panic!("Unexpected item in bagging area: {}", x),
-
         }
     }
 }
@@ -43,13 +42,19 @@ pub struct Monkey {
 }
 
 impl Monkey {
-    fn new(starting_items: Vec<u64>, operator: char, op_value: &str, test: u64, if_false: usize, if_true: usize) -> Self {
+    fn new(
+        starting_items: Vec<u64>,
+        operator: char,
+        op_value: &str,
+        test: u64,
+        if_false: usize,
+        if_true: usize,
+    ) -> Self {
         Self {
-            
-            items: VecDeque::from(starting_items.clone()), 
-            starting_items, 
-            operation: Operation::from_input(operator, op_value), 
-            test, 
+            items: VecDeque::from(starting_items.clone()),
+            starting_items,
+            operation: Operation::from_input(operator, op_value),
+            test,
             if_false,
             if_true,
             inspected_items: 0,
@@ -166,7 +171,14 @@ impl crate::Problem for Day {
                     if_false,
                 ),
             ) = monkey_parser(block).unwrap();
-            self.monkeys.push(Monkey::new(starting_items, op, val_or_old, divisible_by, if_false as usize, if_true as usize))
+            self.monkeys.push(Monkey::new(
+                starting_items,
+                op,
+                val_or_old,
+                divisible_by,
+                if_false as usize,
+                if_true as usize,
+            ))
         }
 
         for _ in 0..20 {
@@ -177,15 +189,14 @@ impl crate::Problem for Day {
             }
         }
 
-        let (first, second) = self.monkeys.iter().fold((0,0), |(a, b), m| {
+        let (first, second) = self.monkeys.iter().fold((0, 0), |(a, b), m| {
             (
                 a.max(m.inspected_items()),
-                a.min(b.max(m.inspected_items()))
+                a.min(b.max(m.inspected_items())),
             )
         });
 
         self.p1 = first * second;
-
     }
 
     fn do_p2(&mut self) {
@@ -194,7 +205,7 @@ impl crate::Problem for Day {
             self.monkeys[i].reset();
             self.monkeys[i].cap = cap;
         }
-        
+
         for _i in 0..10000 {
             for m in 0..self.monkeys.len() {
                 while let Some((value, yeet_to)) = self.monkeys[m].yeet_p2() {
@@ -203,10 +214,10 @@ impl crate::Problem for Day {
             }
         }
 
-        let (first, second) = self.monkeys.iter().fold((0,0), |(a, b), m| {
+        let (first, second) = self.monkeys.iter().fold((0, 0), |(a, b), m| {
             (
                 a.max(m.inspected_items()),
-                a.min(b.max(m.inspected_items()))
+                a.min(b.max(m.inspected_items())),
             )
         });
 
