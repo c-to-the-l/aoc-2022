@@ -108,7 +108,7 @@ impl crate::Problem for Day {
         let mut final_y = 0;
         self.beacon_manhattans
             .sort_by(|((ax, _), _), ((bx, _), _)| ax.cmp(bx));
-        for y in 0..=P2_HI {
+        for y in (0..=P2_HI).rev() {
             let mut ranges: Vec<(i64, i64)> = self
                 .beacon_manhattans
                 .iter()
